@@ -29,6 +29,9 @@ our $HttpConfig = <<_EOC_;
         -- jit.off()
         phase = ngx.get_phase()
     }
+    init_worker_by_lua_block {
+        worker_phase = ngx.get_phase()
+    }
 _EOC_
 
 #no_diff();
@@ -191,11 +194,10 @@ current phase: timer
 
 === TEST 10: get_phase in init_worker_by_lua
 --- http_config eval: $::HttpConfig
-    init_worker_by_lua 'phase = ngx.get_phase()';
 --- config
     location /lua {
         content_by_lua '
-            ngx.say(phase)
+            ngx.say(worker_phase)
         ';
     }
 --- request
