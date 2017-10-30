@@ -27,7 +27,7 @@ our $HttpConfig = <<_EOC_;
 
         require "resty.core"
         -- jit.off()
-
+        phase = ngx.get_phase()
     }
 _EOC_
 
@@ -38,11 +38,10 @@ run_tests();
 __DATA__
 
 === TEST 1: get_phase in init_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         content_by_lua '
-            require "resty.core"
-            phase = ngx.get_phase()
             ngx.say(phase)
         ';
     }
