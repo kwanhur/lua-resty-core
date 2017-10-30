@@ -26,6 +26,8 @@ our $HttpConfig = <<_EOC_;
 
         require "resty.core"
         -- jit.off()
+
+        phase = ngx.get_phase()
     }
 _EOC_
 
@@ -36,8 +38,7 @@ run_tests();
 __DATA__
 
 === TEST 1: get_phase in init_by_lua
---- http_config
-    init_by_lua 'phase = ngx.get_phase()';
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         content_by_lua '
@@ -52,6 +53,7 @@ init
 
 
 === TEST 2: get_phase in set_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     set_by_lua $phase 'return ngx.get_phase()';
     location /lua {
@@ -67,6 +69,7 @@ set
 
 
 === TEST 3: get_phase in rewrite_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         rewrite_by_lua '
@@ -82,6 +85,7 @@ rewrite
 
 
 === TEST 4: get_phase in access_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         access_by_lua '
@@ -97,6 +101,7 @@ access
 
 
 === TEST 5: get_phase in content_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         content_by_lua '
@@ -111,6 +116,7 @@ content
 
 
 === TEST 6: get_phase in header_filter_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         echo "OK";
@@ -126,6 +132,7 @@ Phase: header_filter
 
 
 === TEST 7: get_phase in body_filter_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         content_by_lua '
@@ -143,6 +150,7 @@ body_filter
 
 
 === TEST 8: get_phase in log_by_lua
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         echo "OK";
@@ -158,6 +166,7 @@ log
 
 
 === TEST 9: get_phase in ngx.timer callback
+--- http_config eval: $::HttpConfig
 --- config
     location /lua {
         echo "OK";
@@ -181,7 +190,7 @@ current phase: timer
 
 
 === TEST 10: get_phase in init_worker_by_lua
---- http_config
+--- http_config eval: $::HttpConfig
     init_worker_by_lua 'phase = ngx.get_phase()';
 --- config
     location /lua {
