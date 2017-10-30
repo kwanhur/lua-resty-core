@@ -14,7 +14,7 @@ local error = error
 
 
 ffi.cdef [[
-int ngx_http_lua_ffi_get_phase(ngx_http_request_t *r, char *buf, size_t *len)
+    int ngx_http_lua_ffi_get_phase(ngx_http_request_t *r, char *buf, size_t *len)
 ]]
 
 
